@@ -1,0 +1,30 @@
+.links__item-link {
+  display: inline-block;
+  text-decoration: none;
+  color: lightgrey;
+  font-size: 22px;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  width: 110px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #fff;
+  border-bottom: transparent;
+  padding: 10px;
+  text-align: center;
+  background: linear-gradient(#2e2e2e 75%, #000);
+  transform: scale(0.8);
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.links__item-link:nth-of-type(2) {
+  top: 0;
+  left: 115px;
+}
+
+
+

@@ -1,0 +1,41 @@
+.form__input-button {
+  display: block;
+  width: 83%;
+  margin: 45px auto 0;
+  height: 50px;
+  background-color: #000;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid #000;
+  box-sizing: content-box;
+  padding: 0;
+}
+
+.form__input-button:hover {
+  transition: all 0.2s ease-in-out;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.form__input-button:disabled {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+
+@media screen and (max-width: 425px) {
+  .form__input-button {
+    width: calc(100% - 20px * 2);
+    font-size: 14px;
+    line-height: 17px;
+    margin: 36px auto 0;
+  }
+}

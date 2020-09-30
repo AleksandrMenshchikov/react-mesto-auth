@@ -1,0 +1,29 @@
+@import "./__title/form__title.css";
+@import "./__input/form__input.css";
+@import "./__input-button/form__input-button.css";
+@import "./__input/_name/form__input_name.css";
+@import "./__input/_profession/form__input_profession.css";
+@import "./_non-active/form_non-active.css";
+@import "./__input-error/form__input-error.css";
+@import "./__input/_type_error/form__input_type_error.css";
+@import "./__input-container/form__input-container.css";
+@import "./__input-button/_comfirm/form__input-button_comfirm.css";
+
+.form {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  padding: 34px 0;
+  max-width: 465px;
+  flex-basis: 430px;
+  margin: 0 40px 0 40px;
+}
+
+@media screen and (max-width: 425px) {
+  .form {
+    padding: 30px 0;
+  }
+}

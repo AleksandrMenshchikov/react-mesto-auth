@@ -1,0 +1,21 @@
+@import "./__img/pop-up-image__img.css";
+@import "./__description/pop-up-image__description.css";
+@import "./__close-icon/pop-up-image__close-icon.css";
+@import "./__container/pop-up-image__container.css";
+
+.pop-up-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  z-index: 2;
+}

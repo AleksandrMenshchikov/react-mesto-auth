@@ -1,0 +1,18 @@
+@import "./__header/page__header.css";
+@import "./__profile/page__profile.css";
+@import "./__elements/page__elements.css";
+@import "./__footer/page__footer.css";
+@import "./__links/page__links.css";
+
+.page {
+  background-color: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

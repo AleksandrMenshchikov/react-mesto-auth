@@ -1,0 +1,15 @@
+@import "./vendors/normalize.css";
+@import "./vendors/fonts/stylesheet.css";
+@import "./blocks/page/page.css";
+@import "./blocks/header/header.css";
+@import "./blocks/profile/profile.css";
+@import "./blocks/pop-up/pop-up.css";
+@import "./blocks/form/form.css";
+@import "./blocks/form/__input-error/_visible/form__input-error_visible.css";
+@import "./blocks/elements/elements.css";
+@import "./blocks/elements/__like/_active/elements__like_active.css";
+@import "./blocks/footer/footer.css";
+@import "./blocks/pop-up-image/pop-up-image.css";
+@import "./blocks/pop-up-opened/pop-up-opened.css";
+@import "./blocks/links/links.css";
+@import "./blocks/greeting/greeting.css";

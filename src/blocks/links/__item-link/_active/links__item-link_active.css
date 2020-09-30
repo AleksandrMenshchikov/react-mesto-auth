@@ -1,0 +1,5 @@
+.links__item-link_active {
+  transform: scale(1);
+  z-index: 1;
+  color: #fff;
+}

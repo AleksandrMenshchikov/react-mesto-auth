@@ -1,0 +1,13 @@
+.page__header {
+  padding: 45px 0 0;
+  margin: 0 auto;
+  max-width: 882px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 425px) {
+  .page__header {
+    padding: 28px 0 0;
+  }
+}
