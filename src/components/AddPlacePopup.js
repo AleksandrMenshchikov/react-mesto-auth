@@ -36,10 +36,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   }
 
   React.useEffect(() => {
-    setTimeout(() => {
-      setName("");
-      setLink("");
-    }, 200);
+    setName("");
+    setLink("");
     setIsNameErrorVisible(false);
     setIsLinkErrorVisible(false);
   }, [isOpen]);

@@ -41,11 +41,10 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
-    api
-      .getInitialCards()
+    Promise.all([api.getInitialCards(), api.getUserData()])
       .then((data) => {
-        setCards([...data]);
-        const initCard = data.find(
+        setCards([...data[0]]);
+        const initCard = data[0].find(
           (card) => card._id === location.pathname.slice(7)
         );
         if (initCard) {
@@ -53,7 +52,7 @@ function App() {
           setSelectedCard({ ...initCard });
           setInitialCard({ ...initCard });
         }
-        const initFriend = data.find(
+        const initFriend = data[0].find(
           (card) => card.owner._id === location.pathname.slice(9)
         );
         if (initFriend) {
@@ -61,18 +60,16 @@ function App() {
           setSelectedCard({ ...initFriend.owner });
           setInitialFriend({ ...initFriend.owner });
         }
+        setCurrentUser({ ...data[1] });
       })
       .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  React.useEffect(() => {
-    api
-      .getUserData()
-      .then((res) => {
-        setCurrentUser({ ...res });
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  function handleLike(card) {
+    const newCards = cards.map((c) => (c._id === card._id ? card : c));
+    setCards(newCards);
+  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
@@ -80,16 +77,14 @@ function App() {
       api
         .putLike(card._id)
         .then((newCard) => {
-          const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
-          setCards(newCards);
+          handleLike(newCard);
         })
         .catch((err) => console.log(err));
     } else if (isLiked) {
       api
         .deleteLike(card._id)
         .then((newCard) => {
-          const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
-          setCards(newCards);
+          handleLike(newCard);
         })
         .catch((err) => console.log(err));
     }
@@ -139,7 +134,7 @@ function App() {
       .then((res) => {
         setCurrentUser({ ...res });
         closeAllPopups();
-        setTimeout(() => setLoading(false), 200);
+        setLoading(false);
       })
       .catch((err) => console.error(err));
   }
@@ -277,10 +272,13 @@ function App() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth.getContent(jwt).then((res) => {
-        if (res) {
+        if (res.data) {
           setIsLoggedIn(true);
           setEmail(res.data.email);
           history.push("/");
+        } else if (res.message) {
+          localStorage.removeItem("jwt");
+          history.push("/sign-in");
         }
       });
     }
@@ -288,7 +286,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
