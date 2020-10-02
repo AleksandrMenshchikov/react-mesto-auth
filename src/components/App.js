@@ -2,15 +2,19 @@ import React from "react";
 import "../index.css";
 import Header from "./Header";
 import Main from "./Main";
-import Footer from "./Footer";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmDeleteCardPopup from "./ConfirmDeleteCardPopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import ImagePopup from "./ImagePopup";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
 import { api } from "../utils/api";
-import { useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import InfoTooltip from "./InfoTooltip";
+import * as auth from "../utils/auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState();
@@ -18,6 +22,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState();
   const [isImageCardPopupOpen, setIsImageCardPopupOpen] = React.useState();
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState();
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState();
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -27,6 +32,10 @@ function App() {
   const [initialCard, setInitialCard] = React.useState({});
   const [initialFriend, setInitialFriend] = React.useState({});
   const [linkCards, setLinkCards] = React.useState("");
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isRegisterSuccessed, setIsRegisterSuccessed] = React.useState();
+  const [messageError, setMessageError] = React.useState("");
+  const [email, setEmail] = React.useState(null);
 
   const location = useLocation();
   const history = useHistory();
@@ -194,6 +203,36 @@ function App() {
     setInitialFriend({});
   }
 
+  function closeInfoTooltip() {
+    setIsInfoTooltipPopupOpen(false);
+  }
+
+  function handleRegisterSuccessed() {
+    setIsRegisterSuccessed(true);
+    setIsInfoTooltipPopupOpen(true);
+  }
+
+  function handleRegisterFailed(err) {
+    setIsRegisterSuccessed(false);
+    setIsInfoTooltipPopupOpen(true);
+    setMessageError(err);
+  }
+
+  function handleLoginSuccessed(email) {
+    setIsLoggedIn(true);
+    setEmail(email);
+  }
+
+  function deleteEmail() {
+    setEmail(null);
+  }
+
+  function handleLoginFailed(err) {
+    setIsRegisterSuccessed(false);
+    setIsInfoTooltipPopupOpen(true);
+    setMessageError(err);
+  }
+
   React.useEffect(() => {
     const closePopupsByOverlay = (e) => {
       if (e.target.classList.contains("pop-up-opened")) {
@@ -206,9 +245,27 @@ function App() {
   });
 
   React.useEffect(() => {
+    const closeInfoTooltipByOverlay = (e) => {
+      if (e.target.classList.contains("pop-up-tooltip_opened")) {
+        closeInfoTooltip();
+      }
+    };
+
+    document.addEventListener("click", closeInfoTooltipByOverlay);
+    return () =>
+      document.removeEventListener("click", closeInfoTooltipByOverlay);
+  });
+
+  React.useEffect(() => {
     const closePopupsByEsc = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && document.querySelector(".pop-up-opened")) {
         closeAllPopups();
+      }
+      if (
+        e.key === "Escape" &&
+        document.querySelector(".pop-up-tooltip_opened")
+      ) {
+        closeInfoTooltip();
       }
     };
 
@@ -216,22 +273,57 @@ function App() {
     return () => document.removeEventListener("keydown", closePopupsByEsc);
   });
 
+  function tokenCheck() {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth.getContent(jwt).then((res) => {
+        if (res) {
+          setIsLoggedIn(true);
+          setEmail(res.data.email);
+          history.push("/");
+        }
+      });
+    }
+  }
+
+  React.useEffect(() => {
+    tokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onCardFriendClick={handleCardFriendClick}
-          onCardsClick={handleCardsClick}
-          onFriendsClick={handleFriendsClick}
-        />
+        <Header email={email} deleteEmail={deleteEmail} />
+        <Switch>
+          <Route path="/sign-in">
+            <Login
+              onLoginSuccessed={handleLoginSuccessed}
+              onLoginFailed={handleLoginFailed}
+            />
+          </Route>
+          <Route path="/sign-up">
+            <Register
+              onRegisterSuccessed={handleRegisterSuccessed}
+              onRegisterFailed={handleRegisterFailed}
+            />
+          </Route>
+          <ProtectedRoute
+            path="/"
+            component={Main}
+            loggedIn={isLoggedIn}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            onCardFriendClick={handleCardFriendClick}
+            onCardsClick={handleCardsClick}
+            onFriendsClick={handleFriendsClick}
+          />
+        </Switch>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
@@ -256,11 +348,16 @@ function App() {
           onButtonClick={handleConfirmButtonClick}
           isLoading={isLoading}
         />
-        <Footer />
         <ImagePopup
           isOpen={isImageCardPopupOpen}
           onClose={closeAllPopups}
           selectedCard={selectedCard}
+        />
+        <InfoTooltip
+          registerSuccessed={isRegisterSuccessed}
+          isOpen={isInfoTooltipPopupOpen}
+          onClose={closeInfoTooltip}
+          messageError={messageError}
         />
       </CurrentUserContext.Provider>
     </div>

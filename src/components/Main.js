@@ -5,6 +5,7 @@ import Greeting from "./Greeting";
 import CardFriend from "./CardFriend";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { NavLink, Route } from "react-router-dom";
+import Footer from "./Footer";
 
 function Main({
   onEditAvatar,
@@ -125,6 +126,7 @@ function Main({
           </Route>
         </ul>
       </section>
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,11 @@
+@import "./__title/login__title.css";
+@import "./__form/login__form.css";
+@import "./__email/login__email.css";
+@import "./__password/login__password.css";
+@import "./__button/login__button.css";
+@import "./__text/login__text.css";
+@import "./__link/login__link.css";
+
+.login {
+  max-width: 412px;
+}

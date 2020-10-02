@@ -1,0 +1,16 @@
+.login__email {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #000;
+  border: none;
+  font-weight: normal;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  border-bottom: 2px solid #ccc;
+  min-height: 40px;
+  color: #fff;
+}
+
+.login__email::placeholder {
+  color: #ccc;
+}

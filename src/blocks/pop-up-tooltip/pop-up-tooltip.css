@@ -1,0 +1,23 @@
+@import "./__inner/pop-up-tooltip__inner.css";
+@import "./__container/pop-up-tooltip__container.css";
+@import "./__close-icon/pop-up-tooltip__close-icon.css";
+@import "./__img/pop-up-tooltip__img.css";
+@import "./__text/pop-up-tooltip__text.css";
+
+
+.pop-up-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  z-index: 2;
+}

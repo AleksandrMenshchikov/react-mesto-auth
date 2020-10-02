@@ -10,6 +10,9 @@
 @import "./blocks/elements/__like/_active/elements__like_active.css";
 @import "./blocks/footer/footer.css";
 @import "./blocks/pop-up-image/pop-up-image.css";
-@import "./blocks/pop-up-opened/pop-up-opened.css";
 @import "./blocks/links/links.css";
 @import "./blocks/greeting/greeting.css";
+@import "./blocks/login/login.css";
+@import "./blocks/pop-up-tooltip/pop-up-tooltip.css";
+@import "./blocks/pop-up-opened/pop-up-opened.css";
+@import "./blocks/pop-up-tooltip/_opened/pop-up-tooltip_opened.css";

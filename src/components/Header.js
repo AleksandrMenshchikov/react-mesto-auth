@@ -1,10 +1,61 @@
 import React from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import logo from "../images/logo.svg";
 
-function Header() {
+function Header({ email, deleteEmail }) {
+  const location = useLocation();
+  const history = useHistory();
+
+  const [burgerClicked, setBurgerClicked] = React.useState(false);
+
+  function handleClick() {
+    setBurgerClicked(!burgerClicked);
+  }
+
+  function signOut() {
+    deleteEmail();
+    setBurgerClicked(false);
+    localStorage.removeItem("jwt");
+    history.push("/sign-in");
+  }
+
   return (
     <header className="header page__header">
-      <img src={logo} alt="Логотип" className="header__logo" />
+      <div className="header__nav">
+        <img src={logo} alt="Логотип" className="header__logo" />
+        {location.pathname === "/sign-up" && (
+          <Link className="header__link" to="/sign-in">
+             Войти
+          </Link>
+        )}
+        {location.pathname === "/sign-in" && (
+          <Link className="header__link" to="/sign-up">
+            Регистрация
+          </Link>
+        )}
+        {email && (
+          <button
+            className={`header__burger ${
+              burgerClicked && "header__burger_close"
+            }`}
+            onClick={handleClick}
+          ></button>
+        )}
+      </div>
+      {email && (
+        <div
+          className={`header__auth ${burgerClicked && "header__auth_opened"}`}
+        >
+          <p className="header__email">{email}</p>
+          <Link
+            className="header__link header__link_signout"
+            to="/sign-in"
+            onClick={signOut}
+          >
+             Выйти
+          </Link>
+        </div>
+      )}
     </header>
   );
 }

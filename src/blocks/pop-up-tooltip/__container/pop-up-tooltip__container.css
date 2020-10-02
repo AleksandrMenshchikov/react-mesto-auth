@@ -1,0 +1,7 @@
+.pop-up-tooltip__container {
+  max-width: 468px;
+  flex-basis: 100%;
+  padding: 0 19px 0 19px;
+  box-sizing: border-box;
+  position: relative;
+}
