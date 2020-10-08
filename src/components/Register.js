@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-function Register({ onRegisterSuccessed, onRegisterFailed }) {
+function Register({ onRegisterSuccessed, onRegisterFailed, isAutoLogin }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const history = useHistory();
@@ -43,6 +43,10 @@ function Register({ onRegisterSuccessed, onRegisterFailed }) {
         history.push("/sign-up");
       }
     });
+  }
+
+  if (isAutoLogin) {
+    return null;
   }
 
   return (

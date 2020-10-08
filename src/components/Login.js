@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-function Login({ onLoginSuccessed, onLoginFailed }) {
+function Login({ onLoginSuccessed, onLoginFailed, isAutoLogin }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const history = useHistory();
@@ -40,6 +40,10 @@ function Login({ onLoginSuccessed, onLoginFailed }) {
     });
   }
 
+  if (isAutoLogin) {
+    return null;
+  }
+  
   return (
     <div className="login page__login">
       <h2 className="login__title">Вход</h2>

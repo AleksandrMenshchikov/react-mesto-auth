@@ -36,6 +36,7 @@ function App() {
   const [isRegisterSuccessed, setIsRegisterSuccessed] = React.useState();
   const [messageError, setMessageError] = React.useState("");
   const [email, setEmail] = React.useState(null);
+  const [isAutoLogin, setIsAutoLogin] = React.useState(true)
 
   const location = useLocation();
   const history = useHistory();
@@ -271,16 +272,21 @@ function App() {
   function tokenCheck() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
-      auth.getContent(jwt).then((res) => {
-        if (res.data) {
-          setIsLoggedIn(true);
-          setEmail(res.data.email);
-          history.push("/");
-        } else if (res.message) {
-          localStorage.removeItem("jwt");
-          history.push("/sign-in");
-        }
-      });
+      auth
+        .getContent(jwt)
+        .then((res) => {
+          if (res.data) {
+            setIsLoggedIn(true);
+            setEmail(res.data.email);
+            history.push("/");
+          } else if (res.message) {
+            localStorage.removeItem("jwt");
+            history.push("/sign-in");
+          }
+        })
+        .finally(() => setIsAutoLogin(false));
+    } else if (!jwt) {
+      setIsAutoLogin(false);
     }
   }
 
@@ -296,12 +302,14 @@ function App() {
         <Switch>
           <Route path="/sign-in">
             <Login
+              isAutoLogin={isAutoLogin}
               onLoginSuccessed={handleLoginSuccessed}
               onLoginFailed={handleLoginFailed}
             />
           </Route>
           <Route path="/sign-up">
             <Register
+              isAutoLogin={isAutoLogin}
               onRegisterSuccessed={handleRegisterSuccessed}
               onRegisterFailed={handleRegisterFailed}
             />
