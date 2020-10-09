@@ -36,7 +36,7 @@ function App() {
   const [isRegisterSuccessed, setIsRegisterSuccessed] = React.useState();
   const [messageError, setMessageError] = React.useState("");
   const [email, setEmail] = React.useState(null);
-  const [isAutoLogin, setIsAutoLogin] = React.useState(true)
+  const [isHiddenAuthForm, setIsHiddenAuthForm] = React.useState(true)
 
   const location = useLocation();
   const history = useHistory();
@@ -284,9 +284,9 @@ function App() {
             history.push("/sign-in");
           }
         })
-        .finally(() => setIsAutoLogin(false));
+        .finally(() => setIsHiddenAuthForm(false));
     } else if (!jwt) {
-      setIsAutoLogin(false);
+      setIsHiddenAuthForm(false);
     }
   }
 
@@ -298,18 +298,22 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header email={email} deleteEmail={deleteEmail} />
+        <Header
+          email={email}
+          deleteEmail={deleteEmail}
+          isHiddenAuthForm={isHiddenAuthForm}
+        />
         <Switch>
           <Route path="/sign-in">
             <Login
-              isAutoLogin={isAutoLogin}
+              isHiddenAuthForm={isHiddenAuthForm}
               onLoginSuccessed={handleLoginSuccessed}
               onLoginFailed={handleLoginFailed}
             />
           </Route>
           <Route path="/sign-up">
             <Register
-              isAutoLogin={isAutoLogin}
+              isHiddenAuthForm={isHiddenAuthForm}
               onRegisterSuccessed={handleRegisterSuccessed}
               onRegisterFailed={handleRegisterFailed}
             />

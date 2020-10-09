@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-function Login({ onLoginSuccessed, onLoginFailed, isAutoLogin }) {
+function Login({ onLoginSuccessed, onLoginFailed, isHiddenAuthForm }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const history = useHistory();
@@ -40,10 +40,10 @@ function Login({ onLoginSuccessed, onLoginFailed, isAutoLogin }) {
     });
   }
 
-  if (isAutoLogin) {
+  if (isHiddenAuthForm) {
     return null;
   }
-  
+
   return (
     <div className="login page__login">
       <h2 className="login__title">Вход</h2>

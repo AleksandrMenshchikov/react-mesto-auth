@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import logo from "../images/logo.svg";
 
-function Header({ email, deleteEmail }) {
+function Header({ email, deleteEmail, isHiddenAuthForm }) {
   const location = useLocation();
   const history = useHistory();
 
@@ -23,12 +23,12 @@ function Header({ email, deleteEmail }) {
     <header className="header page__header">
       <div className="header__nav">
         <img src={logo} alt="Логотип" className="header__logo" />
-        {location.pathname === "/sign-up" && (
+        {!isHiddenAuthForm && location.pathname === "/sign-up" && (
           <Link className="header__link" to="/sign-in">
              Войти
           </Link>
         )}
-        {location.pathname === "/sign-in" && (
+        {!isHiddenAuthForm && location.pathname === "/sign-in" && (
           <Link className="header__link" to="/sign-up">
             Регистрация
           </Link>

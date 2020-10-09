@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-function Register({ onRegisterSuccessed, onRegisterFailed, isAutoLogin }) {
+function Register({ onRegisterSuccessed, onRegisterFailed, isHiddenAuthForm }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const history = useHistory();
@@ -45,7 +45,7 @@ function Register({ onRegisterSuccessed, onRegisterFailed, isAutoLogin }) {
     });
   }
 
-  if (isAutoLogin) {
+  if (isHiddenAuthForm) {
     return null;
   }
 
