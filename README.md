@@ -1,7 +1,5 @@
 # Проект на Реакте с авторизацией и регистрацией
 
-Все запросы на авторизацию, регистрацию и проверку токена работают через сервис `https://api.mesto-app.website`.
-
 ### Применяемые технологии
 
 * HTML
@@ -25,3 +23,6 @@
 **MESTO-REACT**
 
 * [Ссылка на сайт](https://mesto-app.website)
+
+Все запросы на авторизацию, регистрацию и проверку токена работают через сервис `https://api.mesto-app.website`.
+* [Ссылка на репозиторий REST API](https://github.com/AleksandrMenshchikov/react-mesto-api-full)
