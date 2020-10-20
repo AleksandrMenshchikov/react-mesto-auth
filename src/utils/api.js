@@ -84,5 +84,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "http://localhost:5000",
+  baseUrl: "https://api.mesto-app.website",
 });
