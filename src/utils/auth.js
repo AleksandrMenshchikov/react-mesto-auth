@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.mesto-app.website";
+const BASE_URL = "http://localhost:5000";
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
