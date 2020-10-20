@@ -1,7 +1,6 @@
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
   }
 
   _handleResponse(res) {
@@ -11,22 +10,29 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  getUserData() {
+  _headers(token) {
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
+  getUserData(token) {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
+      headers: this._headers(token),
     }).then(this._handleResponse);
   }
 
-  getInitialCards() {
+  getInitialCards(token) {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
+      headers: this._headers(token),
     }).then(this._handleResponse);
   }
 
-  patchUserData(name, about) {
+  patchUserData(name, about, token) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._headers(token),
       body: JSON.stringify({
         name,
         about,
@@ -34,10 +40,10 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  postCard(name, link) {
+  postCard(name, link, token) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: this._headers(token),
       body: JSON.stringify({
         name,
         link,
@@ -45,31 +51,31 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  deleteCard(cardId) {
+  deleteCard(cardId, token) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this._headers(token),
     }).then(this._handleResponse);
   }
 
-  putLike(cardId) {
+  putLike(cardId, token) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "PUT",
-      headers: this._headers,
+      headers: this._headers(token),
     }).then(this._handleResponse);
   }
 
-  deleteLike(cardId) {
+  deleteLike(cardId, token) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this._headers(token),
     }).then(this._handleResponse);
   }
 
-  patchAvatar(avatar) {
+  patchAvatar(avatar, token) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._headers(token),
       body: JSON.stringify({
         avatar,
       }),
@@ -78,9 +84,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-13",
-  headers: {
-    authorization: "c1537c16-673d-4616-aeab-a0fea1355e00",
-    "Content-Type": "application/json;charset=utf-8",
-  },
+  baseUrl: "http://localhost:5000",
 });

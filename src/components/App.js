@@ -36,36 +36,42 @@ function App() {
   const [isRegisterSuccessed, setIsRegisterSuccessed] = React.useState();
   const [messageError, setMessageError] = React.useState("");
   const [email, setEmail] = React.useState(null);
-  const [isHiddenAuthForm, setIsHiddenAuthForm] = React.useState(true)
+  const [isHiddenAuthForm, setIsHiddenAuthForm] = React.useState(true);
 
   const location = useLocation();
   const history = useHistory();
 
   React.useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getUserData()])
-      .then((data) => {
-        setCards([...data[0]]);
-        const initCard = data[0].find(
-          (card) => card._id === location.pathname.slice(7)
-        );
-        if (initCard) {
-          setIsImageCardPopupOpen(true);
-          setSelectedCard({ ...initCard });
-          setInitialCard({ ...initCard });
-        }
-        const initFriend = data[0].find(
-          (card) => card.owner._id === location.pathname.slice(9)
-        );
-        if (initFriend) {
-          setIsImageCardPopupOpen(true);
-          setSelectedCard({ ...initFriend.owner });
-          setInitialFriend({ ...initFriend.owner });
-        }
-        setCurrentUser({ ...data[1] });
-      })
-      .catch((err) => console.error(err));
+    if (isLoggedIn) {
+      Promise.all([
+        api.getInitialCards(localStorage.getItem("jwt")),
+        api.getUserData(localStorage.getItem("jwt")),
+      ])
+        .then((data) => {
+          setCards([...data[0]]);
+          const initCard = data[0].find(
+            (card) => card._id === location.pathname.slice(7)
+          );
+          if (initCard) {
+            setIsImageCardPopupOpen(true);
+            setSelectedCard({ ...initCard });
+            setInitialCard({ ...initCard });
+          }
+          const initFriend = data[0].find(
+            (card) => card.owner._id === location.pathname.slice(9)
+          );
+          if (initFriend) {
+            setIsImageCardPopupOpen(true);
+            setSelectedCard({ ...initFriend.owner });
+            setInitialFriend({ ...initFriend.owner });
+          }
+          setCurrentUser({ ...data[1] });
+        })
+        .catch((err) => console.error(err));
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoggedIn]);
 
   function handleLike(card) {
     const newCards = cards.map((c) => (c._id === card._id ? card : c));
@@ -76,14 +82,14 @@ function App() {
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
     if (!isLiked) {
       api
-        .putLike(card._id)
+        .putLike(card._id, localStorage.getItem("jwt"))
         .then((newCard) => {
           handleLike(newCard);
         })
         .catch((err) => console.log(err));
     } else if (isLiked) {
       api
-        .deleteLike(card._id)
+        .deleteLike(card._id, localStorage.getItem("jwt"))
         .then((newCard) => {
           handleLike(newCard);
         })
@@ -131,31 +137,31 @@ function App() {
   function handleUpdateUser({ name, about }) {
     setLoading(true);
     api
-      .patchUserData(name, about)
+      .patchUserData(name, about, localStorage.getItem("jwt"))
       .then((res) => {
         setCurrentUser({ ...res });
         closeAllPopups();
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
   }
 
   function handleUpdateAvatar({ avatar }) {
     setLoading(true);
     api
-      .patchAvatar(avatar)
+      .patchAvatar(avatar, localStorage.getItem("jwt"))
       .then((res) => {
         setCurrentUser({ ...res });
         closeAllPopups();
         setTimeout(() => setLoading(false), 200);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
   }
 
   function handleAddPlace({ name, link }) {
     setLoading(true);
     api
-      .postCard(name, link)
+      .postCard(name, link, localStorage.getItem("jwt"))
       .then((newCard) => {
         setCards([...cards, newCard]);
         closeAllPopups();
@@ -167,14 +173,15 @@ function App() {
   function handleConfirmButtonClick() {
     setLoading(true);
     api
-      .deleteCard(card._id)
+      .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {
         const newCards = cards.filter((c) => c._id !== card._id);
         setCards(newCards);
         closeAllPopups();
         setTimeout(() => setLoading(false), 200);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }
 
   function closeAllPopups() {
@@ -197,6 +204,7 @@ function App() {
     }
     setInitialCard({});
     setInitialFriend({});
+    setLoading(false)
   }
 
   function closeInfoTooltip() {
@@ -275,16 +283,18 @@ function App() {
       auth
         .getContent(jwt)
         .then((res) => {
-          if (res.data) {
+          if (res.email) {
             setIsLoggedIn(true);
-            setEmail(res.data.email);
+            setEmail(res.email);
             history.push("/");
           } else if (res.message) {
             localStorage.removeItem("jwt");
             history.push("/sign-in");
           }
         })
-        .finally(() => setIsHiddenAuthForm(false));
+        .finally(() => {
+          setIsHiddenAuthForm(false);
+        });
     } else if (!jwt) {
       setIsHiddenAuthForm(false);
     }

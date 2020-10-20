@@ -70,6 +70,7 @@ function Register({ onRegisterSuccessed, onRegisterFailed, isHiddenAuthForm }) {
           type="password"
           name="password"
           value={password}
+          minLength={3}
           onChange={handleChange}
           autoComplete="current-password"
         />

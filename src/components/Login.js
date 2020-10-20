@@ -35,7 +35,7 @@ function Login({ onLoginSuccessed, onLoginFailed, isHiddenAuthForm }) {
       } else if (res.message) {
         setEmail("");
         setPassword("");
-        handleLoginFailed(res.message);
+        handleLoginFailed("Неправильно указан email или пароль");
       }
     });
   }
