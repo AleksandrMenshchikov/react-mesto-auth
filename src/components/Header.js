@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import logo from "../images/logo.svg";
+import * as auth from "../utils/auth";
 
 function Header({ email, deleteEmail, isHiddenAuthForm }) {
   const location = useLocation();
@@ -15,8 +16,12 @@ function Header({ email, deleteEmail, isHiddenAuthForm }) {
   function signOut() {
     deleteEmail();
     setBurgerClicked(false);
-    localStorage.removeItem("jwt");
-    history.push("/sign-in");
+    auth
+      .getSignOut()
+      .then(() => {
+        history.push("/sign-in");
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
