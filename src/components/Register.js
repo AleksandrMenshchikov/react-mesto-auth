@@ -31,6 +31,11 @@ function Register({ onRegisterSuccessed, onRegisterFailed, isHiddenAuthForm }) {
         setPassword("");
         handleRegisterSuccessed();
         history.push("/sign-in");
+      } else if (res.validation) {
+        setEmail("");
+        setPassword("");
+        handleRegisterFailed("Неправильно указан email или пароль");
+        history.push("/sign-up");
       } else if (res.error) {
         setEmail("");
         setPassword("");

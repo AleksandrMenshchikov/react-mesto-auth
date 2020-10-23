@@ -15,8 +15,8 @@ function Login({ onLoginSuccessed, onLoginFailed, isHiddenAuthForm }) {
     }
   }
 
-  function handleLoginSuccessed(email) {
-    onLoginSuccessed(email);
+  function handleLoginSuccessed(email, userId) {
+    onLoginSuccessed(email, userId);
   }
 
   function handleLoginFailed(err) {
@@ -26,13 +26,12 @@ function Login({ onLoginSuccessed, onLoginFailed, isHiddenAuthForm }) {
   function handleSubmit(e) {
     e.preventDefault();
     auth.authorize(email, password).then((res) => {
-      if (res.token) {
-        localStorage.setItem("jwt", res.token);
-        handleLoginSuccessed(email);
+      if (res.userId) {
+        handleLoginSuccessed(email, res.userId);
         setEmail("");
         setPassword("");
         history.push("/");
-      } else if (res.message) {
+      } else {
         setEmail("");
         setPassword("");
         handleLoginFailed("Неправильно указан email или пароль");

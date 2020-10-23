@@ -10,29 +10,31 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  _headers(token) {
+  _headers() {
     return {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     };
   }
 
-  getUserData(token) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers(token),
+  getUserData(userId) {
+    return fetch(`${this._baseUrl}/users/${userId}`, {
+      credentials: 'include',
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 
-  getInitialCards(token) {
+  getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 
-  patchUserData(name, about, token) {
+  patchUserData(name, about) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
       body: JSON.stringify({
         name,
         about,
@@ -40,10 +42,11 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  postCard(name, link, token) {
+  postCard(name, link) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
       body: JSON.stringify({
         name,
         link,
@@ -51,31 +54,35 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  deleteCard(cardId, token) {
+  deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 
-  putLike(cardId, token) {
+  putLike(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "PUT",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 
-  deleteLike(cardId, token) {
+  deleteLike(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 
-  patchAvatar(avatar, token) {
+  patchAvatar(avatar) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers(token),
+      credentials: 'include',
+      headers: this._headers(),
       body: JSON.stringify({
         avatar,
       }),
