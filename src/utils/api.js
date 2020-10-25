@@ -91,5 +91,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://api.mesto-app.website",
+  baseUrl: "https://mesto-app.website",
 });
