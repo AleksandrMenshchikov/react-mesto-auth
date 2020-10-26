@@ -63,7 +63,7 @@ class Api {
   }
 
   putLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
       credentials: 'include',
       headers: this._headers(),
@@ -71,7 +71,7 @@ class Api {
   }
 
   deleteLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
       credentials: 'include',
       headers: this._headers(),
@@ -92,4 +92,5 @@ class Api {
 
 export const api = new Api({
   baseUrl: "https://api.mesto-app.website",
+  // baseUrl: "http://localhost:5000",
 });
